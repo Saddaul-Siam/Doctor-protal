@@ -11,13 +11,22 @@ const Register = () => {
   const [registerData, setRegisterData] = useState({});
 
   const { register, handleSubmit, formState: { errors } } = useForm();
-  const onSubmit = data => setRegisterData(data);
+
+  const onSubmit = data => {
+    console.log(data);
+    // if (registerData.password !== registerData.password2) {
+    //   alert("Your password not match");
+    //   return;
+    // }
+    setRegisterData(data);
+
+  };
 
   return (
     <Container>
       <Grid sx={{ mt: 5 }} container spacing={2}>
         <Grid item xs={12} md={6}>
-          <Typography variant="body1" gutterBottom>Login</Typography>
+          <Typography variant="body1" gutterBottom>Register</Typography>
           <form onSubmit={handleSubmit(onSubmit)}>
             <TextField
               sx={{ width: ' 75%', m: 1 }}
@@ -36,18 +45,23 @@ const Register = () => {
 
             <TextField
               sx={{ width: ' 75%', m: 1 }}
-              id="standard-password-input"
               label="Your Password"
               type="password"
-              autoComplete="current-password"
               variant="standard"
               {...register("password")}
             />
+            {/* <TextField
+              sx={{ width: ' 75%', m: 1 }}
+              label="Re-type Your Password"
+              type="password"
+              variant="standard"
+              {...register("password2")}
+            /> */}
             {errors.exampleRequired && <span>This field is required</span>}
             <br />
             <Button variant="contained" type="submit">Submit</Button>
             <br />
-            <NavLink style={{ textDecoration: 'none'}}to="/login"><Button variant="text">Allready Registered Please Login</Button></NavLink>
+            <NavLink style={{ textDecoration: 'none' }} to="/login"><Button variant="text">Allready Registered Please Login</Button></NavLink>
           </form>
         </Grid>
         <Grid item xs={12} md={6}>
