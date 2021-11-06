@@ -1,47 +1,59 @@
+import { Container, Typography, TextField, Button, CircularProgress, Alert } from '@mui/material';
 import React, { useState } from 'react';
-import { Button, Grid } from '@mui/material';
-import TextField from '@mui/material/TextField';
-
-import { Container, Typography } from '@mui/material';
+import { Grid } from '@mui/material';
 import login from '../../../images/login.png'
-import { useForm } from "react-hook-form";
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation, useHistory } from 'react-router-dom';
+import useAuth from '../../../Hooks/useAuth';
 
 const Login = () => {
-
   const [loginData, setLoginData] = useState({});
+  const { user, loginUser, isLoading, authError } = useAuth();
 
-  const { register, handleSubmit, formState: { errors } } = useForm();
-  const onSubmit = data => setLoginData(data);
+  const location = useLocation();
+  const history = useHistory();
 
+  const handleOnChange = e => {
+    const field = e.target.name;
+    const value = e.target.value;
+    const newLoginData = { ...loginData };
+    newLoginData[field] = value;
+    setLoginData(newLoginData);
+  }
+  const handleLoginSubmit = e => {
+    loginUser(loginData.email, loginData.password, location, history);
+    e.preventDefault();
+  }
   return (
     <Container>
-      <Grid sx={{ mt: 5 }} container spacing={2}>
-        <Grid item xs={12} md={6}>
+      <Grid container spacing={2}>
+        <Grid item sx={{ mt: 8 }} xs={12} md={6}>
           <Typography variant="body1" gutterBottom>Login</Typography>
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form onSubmit={handleLoginSubmit}>
             <TextField
-              sx={{ width: ' 75%', m: 1 }}
-              type="email"
+              sx={{ width: '75%', m: 1 }}
+              id="standard-basic"
               label="Your Email"
-              variant="standard"
-              required {...register("email")}
-            />
-
+              name="email"
+              onChange={handleOnChange}
+              variant="standard" />
             <TextField
-              sx={{ width: ' 75%', m: 1 }}
-              id="standard-password-input"
+              sx={{ width: '75%', m: 1 }}
+              id="standard-basic"
               label="Your Password"
               type="password"
-              autoComplete="current-password"
-              variant="standard"
-              {...register("password")}
-            />
-            {errors.exampleRequired && <span>This field is required</span>}
-            <br />
-            <Button variant="contained" type="submit">Submit</Button>
-            <br />
-            <NavLink style={{ textDecoration: 'none'}} to="/register"><Button variant="text">New user ? Please Register</Button></NavLink>
+              name="password"
+              onChange={handleOnChange}
+              variant="standard" />
+
+            <Button sx={{ width: '75%', m: 1 }} type="submit" variant="contained">Login</Button>
+            <NavLink
+              style={{ textDecoration: 'none' }}
+              to="/register">
+              <Button variant="text">New User? Please Register</Button>
+            </NavLink>
+            {isLoading && <CircularProgress />}
+            {user.email && <Alert severity="success"> User login successful</Alert>}
+            {authError && <Alert severity="error">{authError}</Alert>}
           </form>
         </Grid>
         <Grid item xs={12} md={6}>
