@@ -7,12 +7,11 @@ import login from '../../../images/login.png'
 import { useForm } from "react-hook-form";
 import { NavLink } from 'react-router-dom';
 
-const Login = () => {
-
-  const [loginData, setLoginData] = useState({});
+const Register = () => {
+  const [registerData, setRegisterData] = useState({});
 
   const { register, handleSubmit, formState: { errors } } = useForm();
-  const onSubmit = data => setLoginData(data);
+  const onSubmit = data => setRegisterData(data);
 
   return (
     <Container>
@@ -20,6 +19,13 @@ const Login = () => {
         <Grid item xs={12} md={6}>
           <Typography variant="body1" gutterBottom>Login</Typography>
           <form onSubmit={handleSubmit(onSubmit)}>
+            <TextField
+              sx={{ width: ' 75%', m: 1 }}
+              type="text"
+              label="Your Name"
+              variant="standard"
+              required {...register("name")}
+            />
             <TextField
               sx={{ width: ' 75%', m: 1 }}
               type="email"
@@ -41,7 +47,7 @@ const Login = () => {
             <br />
             <Button variant="contained" type="submit">Submit</Button>
             <br />
-            <NavLink style={{ textDecoration: 'none'}} to="/register"><Button variant="text">New user ? Please Register</Button></NavLink>
+            <NavLink style={{ textDecoration: 'none'}}to="/login"><Button variant="text">Allready Registered Please Login</Button></NavLink>
           </form>
         </Grid>
         <Grid item xs={12} md={6}>
@@ -52,4 +58,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;
