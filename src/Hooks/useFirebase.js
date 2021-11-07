@@ -11,6 +11,7 @@ const useFirebase = () => {
   const googleProvider = new GoogleAuthProvider();
   const auth = getAuth();
 
+  // register user
   const registerUser = (email, password, name, history) => {
     setIsLoading(true);
     createUserWithEmailAndPassword(auth, email, password)
@@ -18,6 +19,10 @@ const useFirebase = () => {
         setAuthError("");
         const newUser = { email, displayName: name };
         setUser(newUser);
+
+        // save user to the database
+        saveUser(email, name, 'POST');
+
         // send name to firebase after creation
         updateProfile(auth.currentUser, {
           displayName: name
@@ -31,6 +36,7 @@ const useFirebase = () => {
       .finally(() => setIsLoading(false))
   };
 
+  // login user
   const loginUser = (email, password, location, history) => {
     setIsLoading(true)
     signInWithEmailAndPassword(auth, email, password)
@@ -46,12 +52,13 @@ const useFirebase = () => {
       .finally(() => setIsLoading(false))
   };
 
+  // sign In With Google
   const signInWithGoogle = (location, history) => {
     setIsLoading(true)
     signInWithPopup(auth, googleProvider)
       .then((result) => {
         const user = result.user;
-        console.log(user);
+        saveUser(user.email, user.displayName, 'PUT');
         setAuthError("");
         const destination = location?.state?.from || '/';
         history.replace(destination)
@@ -61,6 +68,7 @@ const useFirebase = () => {
       .finally(() => setIsLoading(false))
   }
 
+  // onAuthStateChanged 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -73,6 +81,7 @@ const useFirebase = () => {
     return () => unsubscribe
   }, [auth]);
 
+  // log out user
   const logOut = () => {
     setIsLoading(true)
     signOut(auth).then(() => {
@@ -81,6 +90,18 @@ const useFirebase = () => {
       setAuthError(error.message)
     })
       .finally(() => setIsLoading(false))
+  };
+
+  // save user information
+  const saveUser = (email, displayName, method) => {
+    const user = { email, displayName };
+    fetch(`http://localhost:5000/users`, {
+      method: method,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(user)
+    })
+      .then(res => res.json())
+      .then(result => console.log(result))
   };
 
   return {
