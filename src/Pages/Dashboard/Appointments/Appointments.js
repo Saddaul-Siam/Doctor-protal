@@ -13,7 +13,7 @@ const Appointments = ({ date }) => {
   const [appointments, setAppointments] = useState([]);
 
   useEffect(() => {
-    fetch(`http://localhost:5000/appointments?email=${user.email}&date=${date}`, {
+    fetch(`https://doctors-portal-24.herokuapp.com/appointments?email=${user.email}&date=${date.toLocaleDateString()}`, {
       headers: {
         'authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'
