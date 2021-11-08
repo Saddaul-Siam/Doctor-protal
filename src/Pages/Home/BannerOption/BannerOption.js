@@ -6,7 +6,7 @@ import { infoData } from '../../../data/data';
 
 const BannerOption = () => {
   return (
-    <Container>
+    <Container style={{marginTop:-75}}>
       <Grid container spacing={3}>
         {
           infoData.map(({ Icon, title, description, background }) => <Grid key={title} item xs={12} sm={12} md={4} lg={4}>

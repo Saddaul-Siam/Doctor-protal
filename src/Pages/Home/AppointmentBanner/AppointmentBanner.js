@@ -1,44 +1,39 @@
+import { Container, Grid, Typography } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import React from 'react';
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
-import doctor from '../../../images/doctor.png'
-import bg from '../../../images/appointment-bg.png'
-import { Button, Container, Typography } from '@mui/material';
-
-const appointmentBanner = {
-  background: `url(${bg})`,
-  backgroundColor: 'rgba(45, 58, 74, 0.8 )',
-  backgroundBlendMode: 'darken,luminosity',
-  marginTop: 150,
-}
+import doctorImg from '../../../images/doctor.png'
+import MuiButton from '../../../StyledComponent/MuiButton';
+import bg from '../../../images/appointmentbg.png'
 
 const AppointmentBanner = () => {
+  const useStyle = makeStyles({
+    root: {
+      background: `url(${bg}), linear-gradient(#3A4256,#3A4256)`,
+      backgroundBlendMode: 'overlay',
+      backgroundRepeat: 'no-repeat',
+      height: 380,
+      display: 'flex',
+      alignItems: 'center',
+      marginTop: 100
+    }
+  })
+  const { root } = useStyle()
   return (
-    <Container>
-      <Box style={appointmentBanner} sx={{ flexGrow: 1 }}>
-        <Grid container spacing={2}>
-          <Grid item xs={12} md={6}>
-            <img style={{ width: 400, marginTop: '-110px' }} src={doctor} alt="" />
+    <div >
+      <Container className={root}>
+        <Grid container spacing={2} sx={{ alignItems: 'center' }}>
+          <Grid item xs={12} sm={12} md={5} lg={5}>
+            <img src={doctorImg} alt="" width="100%" style={{ marginTop: -84 }} />
           </Grid>
-          <Grid item xs={12} md={6} sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center', textAlign: 'left' }}>
-            <Box >
-              <Typography variant="h6" sx={{ mb: 5 }} style={{ color: '#5CE7ED' }}>
-                Appointment
-              </Typography>
-              <Typography variant="h4" sx={{ mb: 4 }} style={{ color: 'white' }}>
-                Make an Appointment Today
-              </Typography>
-              <Typography variant="p" style={{ color: 'white', fontSize: 14, fontWeight: 300 }}>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque asperiores in itaque, ipsum eius iusto corporis cum sint similique modi!
-              </Typography>
-              <br />
-              <Button variant="contained" sx={{ mt: 2 }} style={{ backgroundColor: '#5CE7ED' }} >Learn more</Button>
-            </Box>
+          <Grid item xs={12} sm={12} md={7} lg={7} >
+            <Typography variant="h6" color="#19D3AE">Appointment</Typography>
+            <Typography variant="h4" color="#fff">Make an Appointment today</Typography>
+            <Typography variant="body1" sx={{ my: 3, color: '#fff' }}> Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit, laudantium consequatur? Explicabo neque quod ea. </Typography>
+            <MuiButton variant="contained">Learn more</MuiButton>
           </Grid>
         </Grid>
-      </Box>
-    </Container>
+      </Container>
+    </div>
   );
 };
-
 export default AppointmentBanner;
